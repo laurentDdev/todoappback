@@ -1,4 +1,4 @@
-
+const bcrypt = require('bcrypt')
 const db = require('../models/index')
 const userService = {
 
@@ -8,9 +8,12 @@ const userService = {
             throw new Error('User already existing')
         }
 
-        const user = await db.User.create({email: email, password:password, pseudo: pseudo})
-        return user
+        const hashPassword = bcrypt.hashSync(password, 10)
 
+        const user = await db.User.create({email: email, password: hashPassword, pseudo: pseudo})
+
+        console.log(user)
+        return user
 
     }
 
